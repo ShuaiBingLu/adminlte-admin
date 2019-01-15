@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common_head :: commonHeader('login')"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <header th:replace="/common/common_header :: header"></header>
+    <!-- left -->
+    <div th:replace="/common/common_left :: left"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>sport</h1>
+            <!--
+            <h1>运行报表<small>任务调度中心</small></h1>
+            <ol class="breadcrumb">
+                <li><a><i class="fa fa-dashboard"></i>调度中心</a></li>
+                <li class="active">使用教程</li>
+            </ol>
+            -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- 任务信息 -->
+
+
+
+
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer th:replace="/common/common_footer :: footer"/>
+    <!-- footer -->
+
+</div>
+<div th:replace="/common/common_js :: js"></div>
+<!-- daterangepicker -->
+<script th:src="@{/adminlte/bower_components/moment/moment.min.js}"></script>
+<script th:src="@{/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script th:src="@{/plugins/echarts/echarts.common.min.js}"></script>
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>
