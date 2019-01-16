@@ -30,7 +30,7 @@
         <spring-boot-mapper.version>2.0.2</spring-boot-mapper.version>
         <spring-boot-pagehelper.version>1.2.5</spring-boot-pagehelper.version>
         <zipkin.version>2.10.1</zipkin.version>
-
+        <boot-mapper.version>2.0.2</boot-mapper.version>
         <!-- Environment Settings -->
         <mysql.version>5.1.46</mysql.version>
         <lombok.version>1.16.18</lombok.version>
@@ -143,6 +143,17 @@
                 <version>${swagger2.version}</version>
             </dependency>
             <!-- Swagger2 End -->
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-spring-boot-starter</artifactId>
+                <version>${boot-mapper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${spring-boot-pagehelper.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
