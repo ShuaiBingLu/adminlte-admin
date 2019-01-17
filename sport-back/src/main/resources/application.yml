@@ -16,7 +16,7 @@ spring:
     datasource:
        druid:
             type: com.alibaba.druid.pool.DruidDataSource
-            driverClassName: com.mysql.jdbc.Driver
+            driver-class-name: com.mysql.jdbc.Driver
             url: jdbc:mysql://47.92.50.180:3306/sport?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
             username: root
             password: root
@@ -53,7 +53,14 @@ spring:
               exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
 server:
   port: 8888
-
 login:
   auth:
     path: /login
+mybatis:
+  configuration:
+    cache-enabled: true
+  type-aliases-package: cn.bin2.sport.common.domain
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    cn.bin2.common.mapper: debug

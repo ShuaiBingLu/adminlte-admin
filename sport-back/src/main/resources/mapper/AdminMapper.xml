@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.bin2.sport.common.mapper.AdminMapper">
   <sql id="Base_Column_List" >
-    user_name,user_pwd,enable,nick_name
+    id,user_name,user_pwd,enable,nick_name
   </sql>
 
   <resultMap id="BaseResultMap" type="cn.bin2.sport.common.domain.Admin">
@@ -20,4 +20,5 @@
      from admin where user_name= #{userName,jdbcType=VARCHAR}
 
   </select>
+
 </mapper>

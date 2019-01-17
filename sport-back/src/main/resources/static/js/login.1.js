@@ -12,8 +12,8 @@ $(function(){
 		errorElement : 'span',  
         errorClass : 'help-block',
         focusInvalid : true,  
-        rules : {  
-        	userName : {  
+        rules : {
+            username : {
         		required : true ,
                 minlength: 5,
                 maxlength: 18
@@ -26,12 +26,10 @@ $(function(){
         }, 
         messages : {  
         	userName : {  
-                required  : I18n.login_username_empty,
-                minlength : I18n.login_username_lt_5
+
             },
             password : {
-            	required  : I18n.login_password_empty  ,
-                minlength : I18n.login_password_lt_5
+
                 /*,maxlength:"登录密码不应超过18位"*/
             }
         }, 
@@ -46,17 +44,17 @@ $(function(){
             element.parent('div').append(error);  
         },
         submitHandler : function(form) {
-			$.post(base_url + "/login", $("#loginForm").serialize(), function(data, status) {
+			$.post("/login", $("#loginForm").serialize(), function(data, status) {
 				if (data.code == "200") {
-                    layer.msg( I18n.login_success );
+                    layer.msg( 'cusse' );
                     setTimeout(function(){
                         window.location.href = base_url;
                     }, 500);
 				} else {
                     layer.open({
-                        title: I18n.system_tips,
-                        btn: [ I18n.system_ok ],
-                        content: (data.msg || I18n.login_fail ),
+                        title: '123',
+                        btn: [ 'ok' ],
+                        content: (data.msg || 'fail' ),
                         icon: '2'
                     });
 				}

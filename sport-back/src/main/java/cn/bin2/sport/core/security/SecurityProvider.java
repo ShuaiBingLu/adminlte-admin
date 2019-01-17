@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @Author: bingshuai.lu
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @Date: Created in 16:44 2019/1/16
  * @Modified By:
  */
-@Component
+@Service("securityProvider")
 public class SecurityProvider implements AuthenticationProvider {
     private UserDetailsService userDetailsService;
     public SecurityProvider(UserDetailsService userDetailsService) {
@@ -35,21 +36,6 @@ public class SecurityProvider implements AuthenticationProvider {
         if(userDetails == null) {
             throw new UsernameNotFoundException("用户名/密码无效");
         }
-
-        else if (!userDetails.isEnabled()){
-            System.out.println("jinyong用户已被禁用");
-            throw new DisabledException("用户已被禁用");
-        }else if (!userDetails.isAccountNonExpired()) {
-            System.out.println("guoqi账号已过期");
-            throw new LockedException("账号已过期");
-        }else if (!userDetails.isAccountNonLocked()) {
-            System.out.println("suoding账号已被锁定");
-            throw new LockedException("账号已被锁定");
-        }else if (!userDetails.isCredentialsNonExpired()) {
-            System.out.println("pingzheng凭证已过期");
-            throw new LockedException("凭证已过期");
-        }
-
         String password = userDetails.getPassword();
         //与authentication里面的credentials相比较
         if(!password.equals(token.getCredentials())) {

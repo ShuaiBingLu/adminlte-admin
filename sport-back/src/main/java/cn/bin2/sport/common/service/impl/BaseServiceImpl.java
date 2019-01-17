@@ -1,6 +1,6 @@
 package cn.bin2.sport.common.service.impl;
 
-import cn.bin2.sport.common.MyMapper;
+import cn.bin2.sport.common.tk.MyMapper;
 import cn.bin2.sport.common.service.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

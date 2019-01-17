@@ -8,6 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +20,7 @@ import java.util.Collection;
  * @Date: Created in 16:53 2019/1/16
  * @Modified By:
  */
+@Service("userDetailsService")
 public class AuthUserDetailService implements UserDetailsService {
     @Autowired
     private AdminMapper userMapper;
@@ -30,10 +33,9 @@ public class AuthUserDetailService implements UserDetailsService {
             Admin user = userMapper.selectByUserName(name);
             if(user != null) {
 
-                Collection<GrantedAuthority> authorities = new ArrayList<>();
 
                 //封装自定义UserDetails类
-                userDetails = new MyUserDetail(user, authorities);
+                userDetails = new MyUserDetail(user);
             } else {
                 throw new UsernameNotFoundException("该用户不存在！");
             }

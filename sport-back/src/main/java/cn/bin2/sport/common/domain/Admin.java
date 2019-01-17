@@ -2,6 +2,7 @@ package cn.bin2.sport.common.domain;
 
 import javax.persistence.*;
 
+@Table( name = "admin")
 public class Admin {
     @Id
     private Integer id;

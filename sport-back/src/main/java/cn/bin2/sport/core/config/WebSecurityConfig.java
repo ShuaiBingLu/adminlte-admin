@@ -1,7 +1,12 @@
 package cn.bin2.sport.core.config;
 
+import cn.bin2.sport.common.domain.Admin;
+import cn.bin2.sport.core.service.MyUserDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,13 +19,25 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 /**
  * @Author: bingshuai.lu
@@ -28,11 +45,12 @@ import org.springframework.security.web.session.ConcurrentSessionFilter;
  * @Date: Created in 13:31 2019/1/16
  * @Modified By:
  */
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = false)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     /*
      *
      * @Description:
@@ -61,10 +79,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //自定义用户信息类
         return this.userDetailsService;
     }
+    @Bean
+    public SavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler() { //登入处理
+        return new SavedRequestAwareAuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                //MyUserDetail userDetails = (MyUserDetail) authentication.getPrincipal();
+                logger.info("USER :  LOGIN SUCCESS !  ");
+                super.onAuthenticationSuccess(request, response, authentication);
+            }
+        };
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
+        http.csrf().disable().formLogin() //表单登录
+                .loginPage("/login") //登录页面
+                .loginProcessingUrl("/login")
+                .successHandler(
+                        loginSuccessHandler()
+                ) //认证成功后的处理
+
+                .usernameParameter("username").passwordParameter("password").permitAll()
+
+                .and().logout().permitAll().invalidateHttpSession(true).
+                deleteCookies("JSESSIONID").
+                and().sessionManagement().maximumSessions(10).expiredUrl("/login").and()
+                 //给登录页面的url，处理登录的url赋予permitAll的ConfigureAttribute，在AccessDecision中将会被放行
+                .and()
                 .authorizeRequests()
                 .anyRequest().authenticated() //其他的路径均需要认证才能访问
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -72,52 +114,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     //往FilterSecurityInterceptor中注入自定义的AccessDecisionManager
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O filterSecurity) {
-                        filterSecurity.setAccessDecisionManager(myAccessDecisionManager);
+                        //filterSecurity.setAccessDecisionManager(myAccessDecisionManager);
                         return filterSecurity;
                     }
-                }) //其他的页面必须登录才可以访问
-                .and()
-                .formLogin() //表单登录
-                .loginPage("/login") //登录页面
-                .successHandler((req,resp,auth)->{
-                    //获取登录者信息
-                    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    if (principal != null && principal instanceof UserDetails) {
-                        UserDetails user = (UserDetails) principal;
-                        //维护在session中
-                        req.getSession().setAttribute("userDetail", user);
-                        resp.sendRedirect("/");
-                    }
-                }) //认证成功后的处理
-                .failureHandler((req,resp,authException)->{
+                }); //其他的页面必须登录才可以访问
 
-                    resp.sendRedirect("/login?error");
-                })//认证失败后的处理
-                .permitAll() //给登录页面的url，处理登录的url赋予permitAll的ConfigureAttribute，在AccessDecision中将会被放行
-                .and()
-                .authenticationProvider(securityProvider) //自定义验证的provider
-                .logout() //退出登录
-                .logoutUrl("/logout") //退出登录的地址
-                .logoutSuccessUrl("/template/logout.jsp") //退出登录后的跳转地址
-                .permitAll();//给退出登录后跳转的地址打上perimitAll的ConfigureAttribute
+
     }
 
     @Value("${login.auth.path}")
     private String authPath;
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST,authPath).and().ignoring().antMatchers(
-                HttpMethod.GET,
-                "/*.html",
-                "/**/*.html",
-                "/**/*.css",
-                "/**/*.js"
-        );
-        super.configure(web);
-    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(securityProvider);
+        auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+            }
+
+            /**
+             * @param charSequence 明文
+             * @param s 密文
+             * @return
+             */
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return s.equals(DigestUtils.md5DigestAsHex(charSequence.toString().getBytes()));
+            }
+        });
+
     }
 }
