@@ -108,6 +108,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                  //给登录页面的url，处理登录的url赋予permitAll的ConfigureAttribute，在AccessDecision中将会被放行
                 .and()
                 .authorizeRequests()
+                .antMatchers("/adminlte/**", "/js/**","/plugins/**", "/webjars/**", "**/favicon.ico").permitAll()
                 .anyRequest().authenticated() //其他的路径均需要认证才能访问
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     //通过spring secuirty提供的后处理bean的方式
@@ -125,7 +126,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${login.auth.path}")
     private String authPath;
 
-
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/adminlte/**", "/js/**","/plugins/**", "/webjars/**", "**/favicon.ico");
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {

@@ -51,6 +51,20 @@ spring:
             web-stat-filter:
               url-pattern: /*
               exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+    redis:
+      host: 47.92.50.180
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 2000
+          max-idle: 8
+          min-idle: 8
+    rabbitmq:
+      host: 47.92.50.180
+      port: 5672
+      username: guest
+      password: guest
 server:
   port: 8888
 login:

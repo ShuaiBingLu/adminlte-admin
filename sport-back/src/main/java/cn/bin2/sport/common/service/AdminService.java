@@ -10,4 +10,6 @@ import cn.bin2.sport.common.domain.Admin;
  */
 public interface AdminService extends BaseService<Admin> {
 
+
+    Admin selectUser();
 }

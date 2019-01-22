@@ -27,7 +27,7 @@
 
             <!-- 任务信息 -->
 
-
+            <div id="editor"></div>
 
 
 
@@ -46,43 +46,23 @@
 <script th:src="@{/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js}"></script>
 <script th:src="@{/plugins/echarts/echarts.common.min.js}"></script>
 <script th:src="@{/js/index.js}"></script>
-<script th:inline="javascript">
-    var context =[[${#httpServletRequest.getScheme() +'://'+#httpServletRequest.getServerName() + ':' + #request.getServerPort() + #request.getContextPath()}]]
-    +"/websocket/20";
-    context = context.replace("http","ws");
-    var socket;
-    if(typeof(WebSocket) == "undefined") {
-        console.log("您的浏览器不支持WebSocket");
-    }else{
-        console.log("您的浏览器支持WebSocket");
-        //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-        //等同于socket = new WebSocket("ws://localhost:8083/checkcentersys/websocket/20");
-        socket = new WebSocket(context);
-        //打开事件
-        socket.onopen = function() {
-            console.log("Socket 已打开");
-            //socket.send("这是来自客户端的消息" + location.href + new Date());
-        };
-        //获得消息事件
-        socket.onmessage = function(msg) {
-            console.log(msg.data);
-            //发现消息进入    开始处理前端触发逻辑
-        };
-        //关闭事件
-        socket.onclose = function() {
-            console.log("Socket已关闭");
-        };
-        //发生了错误事件
-        socket.onerror = function() {
-            alert("Socket发生了错误");
-            //此时可以尝试刷新页面
-        }
-        //离开页面时，关闭socket
-        //jquery1.8中已经被废弃，3.0中已经移除
-        // $(window).unload(function(){
-        //     socket.close();
-        //});
-    }
+<!--富文本编辑器wangEditor-->
+<script src="https://cdn.staticfile.org/wangEditor/10.0.13/wangEditor.min.js"></script>
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+
+    // 配置服务器端地址
+    editor.customConfig.uploadImgServer = 'http://localhost:8888/xxxx/upload/editor'
+    //配置指定文件名
+    editor.customConfig.uploadFileName = 'file'
+    //如果图片不大，可以用base64存储
+    //editor.customConfig.uploadImgShowBase64 = true
+    editor.create()
+    editor.txt.html('<p>测试输入</p>')
+    // 读取 html
+    alert(editor.txt.html())
 </script>
 </body>
 </html>
