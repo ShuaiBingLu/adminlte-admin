@@ -8,7 +8,7 @@
     <div class="login-logo">
         <a><b>SPORT </b>MANAGER</a>
     </div>
-    <form id="loginForm" method="post" >
+    <form id="loginForm" method="post" th:action="@{login}">
         <div class="login-box-body">
             <p class="login-box-msg">Login</p>
             <div class="form-group has-feedback">
@@ -37,7 +37,7 @@
 <div th:include="/common/common_js :: js"></div>
 <script th:src="@{/plugins/jquery/jquery.validate.min.js}"></script>
 <script th:src="@{/adminlte/plugins/iCheck/icheck.min.js}"></script>
-<script th:src="@{/js/login.1.js}"></script>
+
 
 </body>
 </html>

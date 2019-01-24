@@ -1,32 +1,7 @@
 $(function(){
 
 	// logout
-	$("#logoutBtn").click(function(){
-		layer.confirm( I18n.logout_confirm , {
-			icon: 3,
-			title: I18n.system_tips ,
-            btn: [ I18n.system_ok, I18n.system_cancel ]
-		}, function(index){
-			layer.close(index);
 
-			$.post(base_url + "/logout", function(data, status) {
-				if (data.code == "200") {
-                    layer.msg( I18n.logout_success );
-                    setTimeout(function(){
-                        window.location.href = base_url + "/";
-                    }, 500);
-				} else {
-					layer.open({
-						title: I18n.system_tips ,
-                        btn: [ I18n.system_ok ],
-						content: (data.msg || I18n.logout_fail),
-						icon: '2'
-					});
-				}
-			});
-		});
-
-	});
 
 	// slideToTop
 	var slideToTop = $("<div />");

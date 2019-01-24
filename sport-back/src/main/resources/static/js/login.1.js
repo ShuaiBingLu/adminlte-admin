@@ -44,6 +44,7 @@ $(function(){
             element.parent('div').append(error);  
         },
         submitHandler : function(form) {
+            /*
 			$.post("/login", $("#loginForm").serialize(), function(data, status) {
 				if (data.code == "200") {
                     layer.msg( 'cusse' );
@@ -58,7 +59,7 @@ $(function(){
                         icon: '2'
                     });
 				}
-			});
+			});*/
 		}
 	});
 });

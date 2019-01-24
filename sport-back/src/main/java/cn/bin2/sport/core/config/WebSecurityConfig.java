@@ -29,6 +29,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
@@ -86,30 +87,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                 //MyUserDetail userDetails = (MyUserDetail) authentication.getPrincipal();
                 logger.info("USER :  LOGIN SUCCESS !  ");
-                super.onAuthenticationSuccess(request, response, authentication);
+
+                response.getWriter().write("ok");
+
+                //super.onAuthenticationSuccess(request, response, authentication);
             }
         };
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        SimpleUrlLogoutSuccessHandler urlLogoutHandler = new SimpleUrlLogoutSuccessHandler();
+        urlLogoutHandler.setDefaultTargetUrl("/login?logout");
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
+        http.authorizeRequests()
+                .antMatchers("/adminlte/**", "/js/**","/plugins/**", "/webjars/**", "**/favicon.ico")
+                .permitAll();
 
-        http.csrf().disable().formLogin() //表单登录
-                .loginPage("/login") //登录页面
-                .loginProcessingUrl("/login")
-                .successHandler(
-                        loginSuccessHandler()
-                ) //认证成功后的处理
-
-                .usernameParameter("username").passwordParameter("password").permitAll()
-
-                .and().logout().permitAll().invalidateHttpSession(true).
-                deleteCookies("JSESSIONID").
-                and().sessionManagement().maximumSessions(10).expiredUrl("/login").and()
+        http.formLogin() //表单登录
+                .loginPage("/login").permitAll() //登录页面
+                .failureUrl("/login?error").and().httpBasic();
+        http.logout().logoutUrl("/user/logout").invalidateHttpSession(true).clearAuthentication(true)
+               // .deleteCookies("JSESSIONID").
+                 .logoutSuccessHandler(urlLogoutHandler);
+                //.and().sessionManagement().maximumSessions(10).expiredUrl("/login").and()
                  //给登录页面的url，处理登录的url赋予permitAll的ConfigureAttribute，在AccessDecision中将会被放行
-                .and()
-                .authorizeRequests()
-                .antMatchers("/adminlte/**", "/js/**","/plugins/**", "/webjars/**", "**/favicon.ico").permitAll()
-                .anyRequest().authenticated() //其他的路径均需要认证才能访问
+
+
+                /*
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     //通过spring secuirty提供的后处理bean的方式
                     //往FilterSecurityInterceptor中注入自定义的AccessDecisionManager
@@ -118,9 +123,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         //filterSecurity.setAccessDecisionManager(myAccessDecisionManager);
                         return filterSecurity;
                     }
-                }); //其他的页面必须登录才可以访问
+                }); //其他的页面必须登录才可以访问*/
 
-
+        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
     }
 
     @Value("${login.auth.path}")
