@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bin2.sport.common.mapper.SiteMapper">
+  <resultMap id="BaseResultMap" type="cn.bin2.sport.common.domain.Site">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="site_id" jdbcType="INTEGER" property="siteId" />
+    <result column="site_name" jdbcType="VARCHAR" property="siteName" />
+    <result column="site_info" jdbcType="VARCHAR" property="siteInfo" />
+    <result column="site_title" jdbcType="VARCHAR" property="siteTitle" />
+    <result column="site_seo" jdbcType="VARCHAR" property="siteSeo" />
+  </resultMap>
+</mapper>

@@ -1,6 +1,8 @@
 package cn.bin2.sport.core.config;
 
 import cn.bin2.sport.common.domain.Admin;
+import cn.bin2.sport.core.security.SpringSecurityUserHolder;
+import cn.bin2.sport.core.security.UserInfoHolder;
 import cn.bin2.sport.core.service.MyUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +83,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return this.userDetailsService;
     }
     @Bean
+    public UserInfoHolder userInfoHolder(){
+        return new SpringSecurityUserHolder();
+    }
+    @Bean
     public SavedRequestAwareAuthenticationSuccessHandler loginSuccessHandler() { //登入处理
         return new SavedRequestAwareAuthenticationSuccessHandler() {
             @Override
@@ -103,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/adminlte/**", "/js/**","/plugins/**", "/webjars/**", "**/favicon.ico")
                 .permitAll();
-
+        http.authorizeRequests().antMatchers("/**").authenticated();
         http.formLogin() //表单登录
                 .loginPage("/login").permitAll() //登录页面
                 .failureUrl("/login?error").and().httpBasic();

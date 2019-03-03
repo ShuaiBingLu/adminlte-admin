@@ -15,10 +15,10 @@
     <result column="enable" jdbcType="BIT" property="enable" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
   </resultMap>
+
   <select id="selectByUserName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
      from admin where user_name= #{userName,jdbcType=VARCHAR}
-
   </select>
 
 </mapper>

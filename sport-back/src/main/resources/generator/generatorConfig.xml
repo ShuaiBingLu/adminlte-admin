@@ -55,7 +55,7 @@
         <!--</table>-->
 
         <!-- 交易所实时货币交易数据 -->
-        <table tableName="admin" />
+        <table tableName="site" />
         <!-- 数字货币服务 End -->
     </context>
 </generatorConfiguration>

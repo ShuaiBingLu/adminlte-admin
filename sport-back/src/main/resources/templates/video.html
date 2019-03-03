@@ -28,7 +28,16 @@
             <!-- 任务信息 -->
 
 
-
+            <script src='//player.polyv.net/script/polyvplayer.min.js'></script>
+            <div id='plv_dfbe3d827e0fe8795afb0cebcb2ce16e_d'></div>
+            <script>
+                var player = polyvObject('#plv_dfbe3d827e0fe8795afb0cebcb2ce16e_d').videoPlayer({
+                    'width':'300',
+                    'height':'170',
+                    'vid' : 'dfbe3d827e0fe8795afb0cebcb2ce16e_d' ,
+                    'forceH5':true
+                });
+            </script>
 
 
         </section>
@@ -48,7 +57,7 @@
 <script th:src="@{/js/index.js}"></script>
 <script th:inline="javascript">
     var context =[[${#httpServletRequest.getScheme() +'://'+#httpServletRequest.getServerName() + ':' + #request.getServerPort() + #request.getContextPath()}]]
-    +"/websocket/20";
+        +"/websocket/20";
     context = context.replace("http","ws");
     var socket;
     if(typeof(WebSocket) == "undefined") {
@@ -86,3 +95,5 @@
 </script>
 </body>
 </html>
+
+

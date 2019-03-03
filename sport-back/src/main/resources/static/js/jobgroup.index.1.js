@@ -42,11 +42,6 @@ $(function() {
 	});
 
 	// jquery.validate “low letters start, limit contants、 letters、numbers and line-through.”
-	jQuery.validator.addMethod("myValid01", function(value, element) {
-		var length = value.length;
-		var valid = /^[a-z][a-zA-Z0-9-]*$/;
-		return this.optional(element) || valid.test(value);
-	}, I18n.jobgroup_field_appName_limit );
 
 	$('.add').on('click', function(){
 		$('#addModal').modal({backdrop: false, keyboard: false}).modal('show');

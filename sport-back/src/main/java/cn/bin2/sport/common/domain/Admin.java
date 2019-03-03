@@ -1,21 +1,21 @@
 package cn.bin2.sport.common.domain;
 
-import javax.persistence.*;
 
-@Table( name = "admin")
+
+
 public class Admin {
-    @Id
+
     private Integer id;
 
-    @Column(name = "user_name")
+
     private String userName;
 
-    @Column(name = "user_pwd")
+
     private String userPwd;
 
     private Boolean enable;
 
-    @Column(name = "nick_name")
+
     private String nickName;
 
     /**

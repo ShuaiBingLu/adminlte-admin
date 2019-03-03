@@ -3,6 +3,7 @@ package cn.bin2.sport.common.service.impl;
 import cn.bin2.sport.common.domain.Admin;
 import cn.bin2.sport.common.mapper.AdminMapper;
 import cn.bin2.sport.common.service.AdminService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @CacheConfig(cacheNames = "user")
-public class AdminServiceImpl extends BaseServiceImpl<Admin, AdminMapper> implements AdminService {
+public class AdminServiceImpl extends ServiceImpl<AdminMapper,Admin> implements AdminService {
 
     @Autowired
     private AdminMapper adminMapper;

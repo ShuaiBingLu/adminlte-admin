@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/common_head :: commonHeader('login')"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <!-- header -->
+    <header th:replace="/common/common_header :: header"></header>
+    <!-- left -->
+    <div th:replace="/common/common_left :: left"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>站点信息</h1>
+            <!--
+            <h1>运行报表<small>任务调度中心</small></h1>
+            <ol class="breadcrumb">
+                <li><a><i class="fa fa-dashboard"></i>调度中心</a></li>
+                <li class="active">使用教程</li>
+            </ol>
+            -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">站点列表</h3>&nbsp;&nbsp;
+                            <button class="btn btn-info btn-xs pull-left2 add" >新增</button>
+                        </div>
+                        <div class="box-body">
+                            <table id="joblog_list" class="table table-bordered table-striped display" width="100%" >
+                                <thead>
+                                <tr>
+
+                                    <th name="order" >站点名称</th>
+                                    <th name="appName" >站点详情</th>
+
+                                    <th name="addressType" >Seo</th>
+                                    <th name="registryList" >创建者</th>
+                                    <th name="operate" >操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="site:${sites}">
+                                    <td th:text="${site.siteName}"></td>
+                                    <td th:text="${site.siteInfo}"></td>
+                                    <td th:text="${site.siteSeo}"></td>
+                                    <td th:text="${site.createUser}"></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-xs update"
+                                                 >编辑</button>
+                                        <button class="btn btn-danger btn-xs remove"  >删除</button>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="addModal" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" >新增</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal form" role="form" >
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">站点名称<font color="red">*</font></label>
+                                    <div class="col-sm-10"><input type="text" class="form-control" name="appName" placeholder="站点名称" maxlength="64" ></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">seo<font color="red">*</font></label>
+                                    <div class="col-sm-10"><input type="text" class="form-control" name="title" placeholder="seo" maxlength="12" ></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">站点描述<font color="red">*</font></label>
+                                    <div class="col-sm-10">
+                                        <textarea class="textarea" name="addressList" maxlength="512" placeholder="站点描述" readonly="readonly" style="background-color:#eee; width: 100%; height: 100px; font-size: 14px; line-height: 10px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-6">
+                                        <button type="submit" class="btn btn-primary"  >保存</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="updateModal" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" >${I18n.jobgroup_edit}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal form" role="form" >
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">站点名称<font color="red">*</font></label>
+                                    <div class="col-sm-10"><input type="text" class="form-control" name="appName" placeholder="站点名称" maxlength="64" ></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">seo<font color="red">*</font></label>
+                                    <div class="col-sm-10"><input type="text" class="form-control" name="order" placeholder="seo" maxlength="50" ></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastname" class="col-sm-2 control-label">站点描述<font color="red">*</font></label>
+                                    <div class="col-sm-10">
+                                        <textarea class="textarea" name="addressList" maxlength="512" placeholder="站点描述" readonly="readonly" style="background-color:#eee; width: 100%; height: 100px; font-size: 14px; line-height: 10px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-6">
+                                        <button type="submit" class="btn btn-primary"  >${I18n.system_save}</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">${I18n.system_cancel}</button>
+                                        <input type="hidden" name="id" >
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer th:replace="/common/common_footer :: footer"/>
+    <!-- footer -->
+    <a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "
+       id="contextPath"></a>
+</div>
+<div th:replace="/common/common_js :: js"></div>
+<!-- daterangepicker -->
+<script th:src="@{/adminlte/bower_components/moment/moment.min.js}"></script>
+<script th:src="@{/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script th:src="@{/plugins/echarts/echarts.common.min.js}"></script>
+<script th:src="@{/js/jobgroup.index.1.js}"></script>
+<!--富文本编辑器wangEditor-->
+<script src="https://cdn.staticfile.org/wangEditor/10.0.13/wangEditor.min.js"></script>
+<script type="text/javascript">
+  //  var E = window.wangEditor
+  //  var editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+
+    // 配置服务器端地址
+ //   editor.customConfig.uploadImgServer = 'http://localhost:8888/xxxx/upload/editor'
+    //配置指定文件名
+ //   editor.customConfig.uploadFileName = 'file'
+    //如果图片不大，可以用base64存储
+    //editor.customConfig.uploadImgShowBase64 = true
+ //   editor.create()
+  //  editor.txt.html('<p>测试输入</p>')
+    // 读取 html
+</script>
+</body>
+</html>
