@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bin2.sport.common.mapper.JobInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.bin2.sport.common.domain.JobInfo">
+        <result column="job_id" property="job_id" />
+        <result column="job_group" property="job_group" />
+        <result column="job_desc" property="job_desc" />
+        <result column="jobCron" property="jobCron" />
+    </resultMap>
+
+</mapper>

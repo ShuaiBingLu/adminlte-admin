@@ -13,8 +13,9 @@ import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
  * @Date: Created in 10:14 2019/3/1
  * @Modified By:
  */
-@Configuration
 public class SchedulerJob {
+
+    /*
     @Bean(name = "firstJob")
     public MethodInvokingJobDetailFactoryBean firstJob(Job job){
         MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean();
@@ -34,5 +35,5 @@ public class SchedulerJob {
         return bean;
     }
 
-
+    */
 }

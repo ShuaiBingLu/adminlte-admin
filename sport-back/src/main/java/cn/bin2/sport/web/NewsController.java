@@ -3,6 +3,7 @@ package cn.bin2.sport.web;
 import cn.bin2.sport.common.domain.News;
 import cn.bin2.sport.common.service.INewsService;
 import cn.bin2.sport.core.entity.ReponseEntity;
+import cn.bin2.sport.core.job.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +31,11 @@ public class NewsController {
        if(res)
           return ReponseEntity.success("新增成功");
        return ReponseEntity.fail();
+    }
+
+    @RequestMapping(value = "job",method = RequestMethod.GET)
+    @ResponseBody
+    public void jobTest() throws Exception{
+        JobScheduler.addJob("job-first","first","*/5 * * * * ?");
     }
 }
