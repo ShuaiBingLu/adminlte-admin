@@ -1,5 +1,6 @@
 package cn.bin2.sport.core.config;
 
+import cn.bin2.sport.common.util.JobHandleExec;
 import cn.bin2.sport.core.job.JobScheduler;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,5 +43,10 @@ public class QuartzConfig {
         JobScheduler jobScheduler = new JobScheduler();
         jobScheduler.setScheduler(scheduler);
         return jobScheduler;
+    }
+    @Bean(initMethod = "start")
+    public JobHandleExec jobHandleExec(){
+        JobHandleExec exec = new JobHandleExec();
+        return exec;
     }
 }
